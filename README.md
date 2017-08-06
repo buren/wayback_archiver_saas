@@ -27,11 +27,11 @@ _Payload_:
 
 ```json
 {
-	"archivation": {
-		"url": "http://example.com",
-		"strategy": "crawl",
-		"notification_email": "test@example.com"
-	}
+  "archivation": {
+    "url": "http://example.com",
+    "strategy": "crawl",
+    "notification_email": "test@example.com"
+  }
 }
 ```
 
