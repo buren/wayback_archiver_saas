@@ -1,0 +1,7 @@
+development:
+  :concurrency: 5
+production:
+  :concurrency: 6
+:queues:
+  - default
+  - mailers
