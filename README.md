@@ -60,13 +60,16 @@ _Response error_:
 }
 ```
 
-
 ## Configuration
 
 Env. variables
 
 * `ADMIN_USERNAME` - Admin username
 * `ADMIN_PASSWORD` - Admin password
+* `SENDGRID_USERNAME` - Sendgrid username
+* `SENDGRID_PASSWORD` - Sendgrid password
+* `DEFAULT_FROM_EMAIL` - Default mailer from email address
+* `REDIS_URL` - Redis URL
 
 ## Deployment
 
@@ -74,4 +77,6 @@ Env. variables
 $ heroku create <your_name>
 $ git push heroku master
 $ heroku run rails db:migrate
+$ heroku addons:create heroku-redis:hobby-dev
+$ heroku addons:create sendgrid:starter
 ```
