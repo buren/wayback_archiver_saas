@@ -66,6 +66,8 @@ Env. variables
 
 * `ADMIN_USERNAME` - Admin username
 * `ADMIN_PASSWORD` - Admin password
+* `WAYBACK_ARCHIVER_DEFAULT_MAX_LIMIT` - WaybackArchiver Max URLs to be sent by default
+* `WAYBACK_ARCHIVER_CONCURRENCY` - WaybackArchiver default concurrency
 * `SENDGRID_USERNAME` - Sendgrid username
 * `SENDGRID_PASSWORD` - Sendgrid password
 * `DEFAULT_FROM_EMAIL` - Default mailer from email address

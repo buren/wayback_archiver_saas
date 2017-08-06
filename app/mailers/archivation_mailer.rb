@@ -1,7 +1,8 @@
 class ArchivationMailer < ApplicationMailer
-  def success(archivation:, email:)
+  def success(archivation:, email:, total:)
     @url = archivation.url
     @archive_url = archivation.archive_url
+    @total = total
 
     mail(to: email, subject: "Archivation finished: #{@url}")
   end

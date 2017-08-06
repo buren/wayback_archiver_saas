@@ -31,10 +31,13 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-gem 'wayback_archiver', '~> 1.0'
+# Send URLs to the Wayback Machine
+gem 'wayback_archiver', '~> 1.1'
 
+# Background worker
 gem 'sidekiq', '< 6'
 
+# Send Emails
 gem 'sendgrid-ruby', '~> 5.0'
 
 group :development, :test do
