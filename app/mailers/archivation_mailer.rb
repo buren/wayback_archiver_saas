@@ -1,5 +1,6 @@
 class ArchivationMailer < ApplicationMailer
   def success(archivation:, email:, total:)
+    @archivation = archivation
     @url = archivation.url
     @archive_url = archivation.archive_url
     @total = total
@@ -8,6 +9,7 @@ class ArchivationMailer < ApplicationMailer
   end
 
   def failed(archivation:, email:)
+    @archivation = archivation
     @url = archivation.url
     @archive_url = archivation.archive_url
 

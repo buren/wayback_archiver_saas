@@ -1,8 +1,8 @@
 class CoolDownRateLimit
-  attr_reader :url, :cooldown_duration
+  attr_reader :host, :cooldown_duration
 
-  def initialize(url, cooldown:)
-    @url = url
+  def initialize(host, cooldown:)
+    @host = host
     @cooldown_duration = cooldown
   end
 
@@ -29,13 +29,13 @@ class CoolDownRateLimit
       text = "(~#{(diff_seconds / 60.0).round(0)} minutes)"
     end
 
-    "to soon for URL resubmission please try again at #{allowed_at} #{text}"
+    "to soon for resubmission of #{host}, please try again at #{allowed_at} #{text}"
   end
 
   def last_archivation
     @last_archivation ||= Archivation.
                                       within_rate_limit(cooldown_duration).
-                                      where(url: url).
+                                      where(host: host).
                                       last
   end
 end

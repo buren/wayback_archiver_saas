@@ -1,14 +1,21 @@
 class Archivation < ApplicationRecord
+  STRATEGIES = %w(auto crawl sitemap url urls)
   RATE_LIMIT_SEC = 60 * 60 * 24
   RATE_LIMITED_STRATEGIES = [nil, '', 'auto', 'crawl', 'sitemap'].freeze
 
+  before_validation :set_uuid
+
   validates :url, presence: true
+  validates :host, presence: true
+  validates :strategy, inclusion: { in: STRATEGIES, message: '%{value} is not a valid strategy' }
 
   validate :validate_url
-  validate :validate_url_rate_limit, on: :create
+  validate :validate_host_rate_limit, on: :create
 
   scope :within_rate_limit, ->(duration = RATE_LIMIT_SEC.seconds) {
-    where(strategy: RATE_LIMITED_STRATEGIES).
+    where.not(status: :errored).
+      where.not(stats: { total: 0 }).
+      where(strategy: RATE_LIMITED_STRATEGIES).
       where('created_at > ?', duration.ago)
   }
 
@@ -19,17 +26,21 @@ class Archivation < ApplicationRecord
     errored: 4
   }
 
+  def set_uuid
+    self.uuid = SecureRandom.uuid
+  end
+
   def archive_url
     "https://web.archive.org/web/*/#{url}"
   end
 
-  def validate_url_rate_limit
+  def validate_host_rate_limit
     return unless RATE_LIMITED_STRATEGIES.include?(strategy)
 
-    rate_limit = CoolDownRateLimit.new(self.url, cooldown: RATE_LIMIT_SEC.seconds)
+    rate_limit = CoolDownRateLimit.new(self.host, cooldown: RATE_LIMIT_SEC.seconds)
     return unless rate_limit.throttled?
 
-    errors.add(:url, rate_limit.error)
+    errors.add(:host, rate_limit.error)
   end
 
   def validate_url

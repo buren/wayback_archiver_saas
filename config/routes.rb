@@ -6,14 +6,14 @@ Sidekiq::Web.use Rack::Auth::Basic do |username, password|
   if Rails.env.development?
     true
   else
-    username == ENV.fetch('ADMIN_USERNAME') && password == ENV.fetch('ADMIN_PASSWORD')
+    username == ENV.fetch('ADMIN_EMAIL') && password == ENV.fetch('ADMIN_PASSWORD')
   end
 end
 
 Rails.application.routes.draw do
   mount Sidekiq::Web, at: 'sidekiq'
 
-  resources :archivations, only: %i(create)
+  resources :archivations, only: %i(create show)
 
   get '/ping', to: 'archivations#ping'
 end

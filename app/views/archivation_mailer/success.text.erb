@@ -1,5 +1,16 @@
+<% if @total == 0 %>
+Hm.. no URL was sent to the Wayback Machine. So somehing seems to have gone wrong :|
+
+You can:
+
+- Double check the supplied URL (<%= @url %>)
+<% if @archivation.strategy == 'sitemap' %>
+- Verify that the URL points to a valid Sitemap
+<% end %>
+<% else %>
 Archivation of <%= @url %> finished :)
 
 In total <%= @total %> URL(s) were sent to the Wayback Machine.
 
 View the archive at <%= @archive_url %>
+<% end %>

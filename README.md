@@ -60,11 +60,31 @@ _Response error_:
 }
 ```
 
+### Show archivation
+
+#### `GET /archivations/:uuid`
+
+_Response success_:
+
+```json
+{
+  "id": 32,
+  "url": "http://example.com",
+  "strategy": "crawl",
+  "status": "queued",
+  "notification_email": "test@example.com",
+  "created_at": "2017-08-05T23:56:51.905Z",
+  "updated_at": "2017-08-05T23:56:51.905Z"
+}
+```
+
+_Response error_: 404
+
 ## Configuration
 
 Env. variables
 
-* `ADMIN_USERNAME` - Admin username
+* `ADMIN_EMAIL` - Admin email
 * `ADMIN_PASSWORD` - Admin password
 * `WAYBACK_ARCHIVER_DEFAULT_MAX_LIMIT` - WaybackArchiver Max URLs to be sent by default
 * `WAYBACK_ARCHIVER_CONCURRENCY` - WaybackArchiver default concurrency

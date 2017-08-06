@@ -1,6 +1,11 @@
 class ArchivationsController < ApplicationController
   protect_from_forgery with: :null_session
 
+  def show
+    uuid = params[:id].presence || raise(ActiveRecord::RecordNotFound)
+    render json: Archivation.find_by!(uuid: uuid)
+  end
+
   def create
     archivation = Archivation.new(archivation_params)
 

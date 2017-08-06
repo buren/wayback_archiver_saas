@@ -10,23 +10,33 @@ class ArchivationJob < ApplicationJob
     results = begin
                 WaybackArchiver.archive(archivation.url, strategy: strategy)
               rescue => e
-                Rails.logger.error "Archivation of ##{archivation.id} failed, with #{e}, #{e.message}"
-                nil
+                message = "Archivation of ##{archivation.id} failed, with #{e}, #{e.message}"
+                Rails.logger.error message
+                [notification_email, ENV['ADMIN_EMAIL']].compact.each do |email|
+                  ArchivationMailer.failed(
+                    archivation: archivation,
+                    email: email
+                  ).deliver_later
+                end
+
+                archivation.update!(
+                  status: :errored,
+                  stats: { total: total, error: message }
+                )
+                return
               end
 
-    if results && notification_email
-      ArchivationMailer.success(
-        archivation: archivation,
-        email: notification_email,
-        total: results.length
-      ).deliver_later
-    elsif notification_email
-      ArchivationMailer.failed(
-        archivation: archivation,
-        email: notification_email
-      ).deliver_later
-    end
+    total = results.length
 
-    archivation.update!(status: results ? :finished : :errored)
+    archivation.update!(
+      status: :finished,
+      stats: { total: total }
+    )
+
+    ArchivationMailer.success(
+      archivation: archivation,
+      email: notification_email,
+      total: total
+    ).deliver_later if notification_email
   end
 end
