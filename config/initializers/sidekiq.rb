@@ -4,7 +4,7 @@
 require 'sidekiq/middleware/i18n'
 
 if Rails.env.production?
-  redis_url = 'localhost:6379'
+  redis_url = ENV.fetch('REDIS_URL', 'localhost:6379')
   redis_timeout = 5
 
   Sidekiq.configure_server do |config|
