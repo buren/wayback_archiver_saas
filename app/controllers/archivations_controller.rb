@@ -1,15 +1,24 @@
 class ArchivationsController < ApplicationController
   protect_from_forgery with: :null_session
 
+  def new
+    @archivation = Archivation.new(strategy: :auto)
+  end
+
   def show
     uuid = params[:id].presence || raise(ActiveRecord::RecordNotFound)
-    render json: Archivation.find_by!(uuid: uuid)
+    @archivation = Archivation.find_by!(uuid: uuid)
+
+    respond_to do |format|
+      format.json { render json: @archivation }
+      format.html { render :show }
+    end
   end
 
   def create
-    archivation = Archivation.new(archivation_params)
+    @archivation = Archivation.new(archivation_params)
 
-    create_and_render(archivation)
+    create_and_render(@archivation)
   end
 
   def ping
@@ -38,12 +47,20 @@ class ArchivationsController < ApplicationController
   def create_and_render(archivation)
     CreateArchivation.call(archivation) do |archivation, success|
       if success
-        render json: archivation, status: 201
+        respond_to do |format|
+          format.json { render json: archivation, status: 201 }
+          format.html { redirect_to archivation_path(archivation.uuid)  }
+        end
       else
-        render json: {
-          status: 422,
-          errors: archivation.errors.full_messages
-        }, status: 422
+        respond_to do |format|
+          format.json do
+            render json: {
+              status: 422,
+              errors: archivation.errors.full_messages
+            }, status: 422
+          end
+          format.html { render :new }
+        end
       end
     end
   end

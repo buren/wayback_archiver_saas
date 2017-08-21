@@ -29,5 +29,9 @@ module WaybackArchiveSaas
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.action_mailer.default_url_options = {
+      host: ENV.fetch('DEFAULT_MAILER_HOST', 'waybackarchiver.com')
+    }
   end
 end

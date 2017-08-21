@@ -1,0 +1,12 @@
+<ul>
+  <li><strong>Status:</strong> <%= archivation_status_badge(@archivation) %></li>
+  <li><strong>URL:</strong> <%= link_to(@archivation.url, @archivation.url) %></li>
+  <li><strong>Strategy:</strong> <%= @archivation.strategy %></li>
+  <li><strong>URLs archived:</strong> <%= @archivation.stats['total'] %></li>
+</ul>
+
+<!-- <p>Share on <a href="#facebook" alt="Share on Facebook">Facebook</a> | <a href="#twitter" alt="Share on Twitter">Twitter</a></p> -->
+
+<hr>
+<h3>New archivation</h3>
+<%= render 'form', archivation: Archivation.new %>

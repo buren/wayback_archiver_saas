@@ -2,6 +2,12 @@ class Archivation < ApplicationRecord
   STRATEGIES = %w(auto crawl sitemap url urls)
   RATE_LIMIT_SEC = 60 * 60 * 24
   RATE_LIMITED_STRATEGIES = [nil, '', 'auto', 'crawl', 'sitemap'].freeze
+  STATUSES = {
+    queued: 1,
+    started: 2,
+    finished: 3,
+    errored: 4
+  }.freeze
 
   before_validation :set_uuid
 
@@ -19,14 +25,11 @@ class Archivation < ApplicationRecord
       where('created_at > ?', duration.ago)
   }
 
-  enum status: {
-    queued: 1,
-    started: 2,
-    finished: 3,
-    errored: 4
-  }
+  enum status: STATUSES
 
   def set_uuid
+    return if self.uuid.present?
+
     self.uuid = SecureRandom.uuid
   end
 
@@ -46,6 +49,6 @@ class Archivation < ApplicationRecord
   def validate_url
     return if ValidateURL.valid?(url)
 
-    errors.add(:url, 'must be a valid URL (with http(s))')
+    errors.add(:url, 'must be a valid, non-blacklisted, URL (with http(s))')
   end
 end

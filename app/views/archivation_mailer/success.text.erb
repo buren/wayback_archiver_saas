@@ -14,3 +14,5 @@ In total <%= @total %> URL(s) were sent to the Wayback Machine.
 
 View the archive at <%= @archive_url %>
 <% end %>
+
+View details at <%= archivation_url(@archivation.uuid) %>

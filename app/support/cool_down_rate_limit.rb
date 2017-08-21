@@ -22,14 +22,14 @@ class CoolDownRateLimit
     diff_seconds = allowed_at - Time.now
 
     if diff_seconds < 60
-      text = "(~#{(diff_seconds).round(0)} seconds)"
+      text = "~#{(diff_seconds).round(0)} seconds"
     elsif diff_seconds > 3600
-      text = "(~#{(diff_seconds / 3600.0).round(0)} hours)"
+      text = "~#{(diff_seconds / 3600.0).round(0)} hours"
     else
-      text = "(~#{(diff_seconds / 60.0).round(0)} minutes)"
+      text = "~#{(diff_seconds / 60.0).round(0)} minutes"
     end
 
-    "to soon for resubmission of #{host}, please try again at #{allowed_at} #{text}"
+    "to soon for resubmission of #{host}, please try again in #{text} (#{allowed_at})"
   end
 
   def last_archivation
