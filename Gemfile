@@ -34,6 +34,9 @@ gem 'jbuilder', '~> 2.5'
 # Send URLs to the Wayback Machine
 gem 'wayback_archiver', '~> 1.1'
 
+ # Helper for social share
+gem 'social-share-button'
+
 # Background worker
 gem 'sidekiq', '< 6'
 
