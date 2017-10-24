@@ -31,7 +31,7 @@ module WaybackArchiveSaas
     config.generators.system_tests = nil
 
     config.action_mailer.default_url_options = {
-      host: ENV.fetch('DEFAULT_MAILER_HOST', 'waybackarchiver.com')
+      host: ENV.fetch('DEFAULT_MAILER_HOST', 'www.waybackarchiver.com')
     }
   end
 end
